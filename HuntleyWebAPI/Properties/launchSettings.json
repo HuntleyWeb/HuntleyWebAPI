@@ -1,0 +1,38 @@
+﻿{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:54017",
+      "sslPort": 44353
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "https://localhost:44353/swagger/index.html",
+      "ApplicationInsights": {
+        "InstumentationKey": "7ce409f0-6d69-42c3-8ece-3ca3dcb09d9f"
+      },
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "MailServer": "mail5.hostinguk.net",
+        "MailServerUser": "jon.huntley@huntleyweb.co.uk",
+        "MailServerPwd": "Scooter25@",
+        "MailServerPort": "0",
+        "EnableSSL": false
+      }
+    },
+    "HuntleyWebAPI": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "weatherforecast",
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
