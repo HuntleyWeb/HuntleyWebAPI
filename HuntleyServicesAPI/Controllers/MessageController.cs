@@ -1,33 +1,28 @@
-﻿using HuntleyWeb.Application.Commands.Email;
+﻿using HuntleyServicesAPI.Models;
+using HuntleyWeb.Application.Commands.Email;
 using HuntleyWeb.Application.Models;
-using HuntleyWeb.Application.Services;
-using HuntleyWebAPI.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
-using System.Threading.Tasks;
 
-namespace HuntleyWebAPI.Controllers
+namespace HuntleyServicesAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class EmailController : ControllerBase
+    [Route("[controller]")]
+    public class MessageController : ControllerBase
     {
-        private readonly IMailMessageService _mailService;
         private readonly IMediator _mediator;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<EmailController> _logger;
-        
-        public EmailController(IMediator mediator, IConfiguration configuration, ILogger<EmailController> logger)
+        private readonly ILogger<MessageController> _logger;
+
+        public MessageController(IMediator mediator, IConfiguration configuration, ILogger<MessageController> logger)
         {            
             _mediator = mediator;
             _configuration = configuration;
             _logger = logger;
         }
-        
+
         [HttpGet]
         [Route("mailuser")]
         public async Task<IActionResult> GetMailServerUser()
@@ -43,8 +38,8 @@ namespace HuntleyWebAPI.Controllers
         [Route("sendmessage")]
         [SwaggerResponse((int)HttpStatusCode.OK, Description = "Successfully Sent Email Message")]
         [SwaggerResponse((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> SendMailMessage([FromBody]ContactMessage emailDetails)
-        {                        
+        public async Task<IActionResult> SendMailMessage([FromBody] ContactMessage emailDetails)
+        {
             if (string.IsNullOrEmpty(emailDetails.TargetAddress) || string.IsNullOrEmpty(emailDetails.FromAddress))
             {
                 return BadRequest("Missing Email Address");
@@ -53,7 +48,7 @@ namespace HuntleyWebAPI.Controllers
             if (string.IsNullOrEmpty(emailDetails.Subject))
             {
                 return BadRequest("Missing Message Subject");
-            }            
+            }
 
             var mailRequest = new MailMessageRequest
             {
@@ -70,7 +65,7 @@ namespace HuntleyWebAPI.Controllers
             };
 
             var result = await _mediator.Send(command);
-           
+
             return Ok(result.Response);
         }
     }

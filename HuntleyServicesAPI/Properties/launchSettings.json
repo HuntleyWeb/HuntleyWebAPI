@@ -1,0 +1,44 @@
+{
+  "profiles": {
+    "HuntleyServicesAPI": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "ApplicationInsights": {
+        "InstumentationKey": "7ce409f0-6d69-42c3-8ece-3ca3dcb09d9f"
+      },
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Mail:Server": "mail.hostinguk.net",
+        "Mail:ServerUser": "jon.huntley@huntleyweb.co.uk",
+        "Mail:ServerPassword": "Scooter25@",
+        "Mail:ServerPort": "0",
+        "Mail:EnableSSL": "false",
+        "Data:Bookings:DbName": "HuntleyHomesBookings",
+        "Data:Bookings:Connection": "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
+        "Data:Bookings:ContainerBookingRates": "BookingRates",
+        "Data:Bookings:ContainerBookings": "Bookings",
+        "Data:Bookings:Ttl": "157680000"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7125;http://localhost:5125"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:28034",
+      "sslPort": 44341
+    }
+  }
+}
