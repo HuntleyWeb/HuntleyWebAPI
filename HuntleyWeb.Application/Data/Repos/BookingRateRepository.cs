@@ -17,7 +17,7 @@ namespace HuntleyWeb.Application.Data.Repos
 
         public async Task<Guid> CreateNewBookingRate(BookingRate rate)
         {
-            var result = await base.CreateAsync(rate);
+            var result = await base.CreateAsync(rate, rate.PartitionKey);
 
             if (result != null)
                 return result.Id;
@@ -27,12 +27,26 @@ namespace HuntleyWeb.Application.Data.Repos
 
         public async Task<Guid> UpsertBookingRate(BookingRate rate)
         {
-            var result = await base.UpsertAsync(rate, rate.Year.ToString());
+            var result = await base.UpsertAsync(rate, rate.PartitionKey);
 
             if (result != null)
                 return result.Id;
 
             return Guid.Empty;
+        }
+
+        public async Task<BookingRate> GetBookingRateAsync(BookingRate rate)
+        {
+            var result = await base.GetDocumentAsync(rate.Id.ToString(), rate.PartitionKey);
+
+            return result;
+        }
+
+        public async Task<bool> DeleteBookingRate(BookingRate rate)
+        {
+            var result = await base.DeleteDocumentAsync(rate.Id.ToString(), rate.PartitionKey);
+        
+            return result;
         }
 
         public async Task<BookingRate> GetBookingRateAsync(int year, int weekNumber)
@@ -43,7 +57,5 @@ namespace HuntleyWeb.Application.Data.Repos
 
             return result;
         }
-
-
     }
 }

@@ -10,6 +10,10 @@ namespace HuntleyWeb.Application.Data.Repos
 
         Task<BookingRate> GetBookingRateAsync(int year, int weekNumber);
 
+        Task<BookingRate> GetBookingRateAsync(BookingRate rate);
+
         Task<Guid> UpsertBookingRate(BookingRate rate);
+
+        Task<bool> DeleteBookingRate(BookingRate rate);
     }
 }

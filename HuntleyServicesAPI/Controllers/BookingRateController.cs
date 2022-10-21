@@ -1,6 +1,6 @@
 ﻿using HuntleyServicesAPI.Models;
-using HuntleyWeb.Application.Commands.BookingRates;
 using HuntleyWeb.Application.Commands.BookingRates.Command;
+using HuntleyWeb.Application.Commands.BookingRates.Command.enums;
 using HuntleyWeb.Application.Commands.BookingRates.Query;
 using HuntleyWeb.Application.Data.Models.Bookings;
 using MediatR;
@@ -57,19 +57,93 @@ namespace HuntleyServicesAPI.Controllers
                 AvailableForRental = rate.Available
             };
 
-            var command = new BookingRateInsertCommand
+            var command = new BookingRateCommand
             {
-                NewBookingRate = bookingRate
+                Rate = bookingRate,
+                RequestedAction = CommandAction.Insert
             };
 
             var result = await _mediator.Send(command);
 
             var response = new OkObjectResult(result)
             {
-                StatusCode = (result.Success) ? (int)HttpStatusCode.Created : (int)HttpStatusCode.InternalServerError
+                StatusCode = result.CommandResult switch
+                {                   
+                    CommandActionResult.Created => (int)HttpStatusCode.Created,     
+                    CommandActionResult.Conflict => (int)HttpStatusCode.Conflict,
+                    _ => (int)HttpStatusCode.InternalServerError
+                }
             };
 
             return response;            
+        }
+
+        [HttpPut]
+        [Route("updateBookingRate")]
+        [SwaggerResponse((int)HttpStatusCode.NoContent, Description = "Successfully Updated Booking Rate")]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest)]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> UpdateBookingRate([FromBody] BookingRate rate)
+        {
+            var minYear = DateTime.Now.Year - 1;            
+
+            var command = new BookingRateCommand
+            {
+                Rate = rate,
+                RequestedAction = CommandAction.Update
+            };
+
+            var result = await _mediator.Send(command);
+
+            var response = new OkObjectResult(result)
+            {
+                StatusCode = result.CommandResult switch
+                {
+                    CommandActionResult.NotFound => (int)HttpStatusCode.NotFound,                   
+                    CommandActionResult.Updated => (int)HttpStatusCode.NoContent,                    
+                    _ => (int)HttpStatusCode.InternalServerError
+                }                
+            };
+
+            return response;
+        }
+
+        [HttpDelete]
+        [Route("deleteBookingRate")]
+        [SwaggerResponse((int)HttpStatusCode.NoContent, Description = "Successfully Deleted Booking Rate")]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest)]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> DeleteBookingRate(string documentId, string year)
+        {
+            0if (!Guid.TryParse(documentId, out var bookingRateId))
+                return BadRequest("Invalid Booking Rate Id");
+
+            if (!int.TryParse(year, out var bookingYear))
+                return BadRequest("Invalid Year");            
+
+            var command = new BookingRateCommand
+            {
+                Rate = new BookingRate
+                {
+                    Id = bookingRateId,
+                    Year = bookingYear
+                },               
+                RequestedAction = CommandAction.Delete
+            };
+
+            var result = await _mediator.Send(command);
+
+            var response = new OkObjectResult(result)
+            {
+                StatusCode = result.CommandResult switch
+                {
+                    CommandActionResult.Deleted => (int)HttpStatusCode.NoContent,
+                    CommandActionResult.NotFound => (int)HttpStatusCode.NotFound,
+                    _ => (int)HttpStatusCode.InternalServerError
+                }
+            };
+
+            return response;
         }
 
         [HttpGet]

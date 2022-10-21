@@ -10,7 +10,7 @@ namespace HuntleyServicesAPI.Configuration
         public static IServiceCollection AddFunctionServices(this IServiceCollection services)
         {
             services.AddMediatR(typeof(MailMessageCommand));
-            services.AddMediatR(typeof(BookingRateInsertCommand));
+            services.AddMediatR(typeof(BookingRateCommand));
             services.AddMediatR(typeof(BookingRateQueryHandler));
 
             return services;

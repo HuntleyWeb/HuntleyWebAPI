@@ -52,14 +52,14 @@ namespace HuntleyWeb.Application.Data.Repos.Cosmos
             }
         }
 
-        public async Task<T> CreateAsync(T item, ItemRequestOptions options = null)
+        public async Task<T> CreateAsync(T item, string partitionKey, ItemRequestOptions options = null)
         {
             if (item == null)
             {
                 throw new ArgumentNullException(nameof(item));
             }
 
-            var response = await Container.CreateItemAsync(item, null, options, GetCancellationTokenWithTimeout());
+            var response = await Container.CreateItemAsync(item, new PartitionKey(partitionKey), options, GetCancellationTokenWithTimeout());
 
             return response;
         }
@@ -82,6 +82,13 @@ namespace HuntleyWeb.Application.Data.Repos.Cosmos
             var response = await Container.DeleteItemAsync<T>(documentId, new PartitionKey(partitionKeyValue), options);
 
             return IsSuccessStatusCode(response.StatusCode);
+        }
+
+        public async Task<T> GetDocumentAsync(string documentId, string partitionKeyValue, ItemRequestOptions options = null)
+        {
+            var response = await Container.ReadItemAsync<T>(documentId, new PartitionKey(partitionKeyValue), options, GetCancellationTokenWithTimeout());
+
+            return response;
         }
 
         public async Task<T> QuerySingleAsync(string query, QueryRequestOptions options = null)
