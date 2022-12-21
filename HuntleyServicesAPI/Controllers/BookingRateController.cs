@@ -115,7 +115,7 @@ namespace HuntleyServicesAPI.Controllers
         [SwaggerResponse((int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> DeleteBookingRate(string documentId, string year)
         {
-            0if (!Guid.TryParse(documentId, out var bookingRateId))
+            if (!Guid.TryParse(documentId, out var bookingRateId))
                 return BadRequest("Invalid Booking Rate Id");
 
             if (!int.TryParse(year, out var bookingYear))

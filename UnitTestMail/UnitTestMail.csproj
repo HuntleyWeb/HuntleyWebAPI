@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HuntleyWeb.Application\HuntleyWeb.Application.csproj" />
-    <ProjectReference Include="..\HuntleyWebAPI\HuntleyWebAPI.csproj" />
   </ItemGroup>
 
 </Project>

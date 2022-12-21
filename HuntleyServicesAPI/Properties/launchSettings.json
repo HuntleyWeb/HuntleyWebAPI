@@ -9,7 +9,7 @@
       },
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "Mail:Server": "mail.hostinguk.net",
+        "Mail:Server": "mail5.hostinguk.net",
         "Mail:ServerUser": "jon.huntley@huntleyweb.co.uk",
         "Mail:ServerPassword": "Scooter25@",
         "Mail:ServerPort": "0",
