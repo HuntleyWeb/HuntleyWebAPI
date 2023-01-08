@@ -3,6 +3,7 @@ using HuntleyWeb.Application.Data.Models.Bookings;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 
 namespace HuntleyWeb.Application.Services.Bookings
 {
@@ -95,6 +96,16 @@ namespace HuntleyWeb.Application.Services.Bookings
             }
 
             return days.ToArray();
+        }
+
+        public static string GetNotificationContent(Booking booking)
+        {   
+            var sb = new StringBuilder();
+
+            sb.Append("<h1>New Booking Request</h1>");
+            sb.AppendLine("Customer Name:" + booking.Name);
+            
+            return sb.ToString();
         }
     }
 }

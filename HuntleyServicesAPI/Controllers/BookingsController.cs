@@ -1,16 +1,17 @@
-﻿using HuntleyServicesAPI.Models;
-using HuntleyWeb.Application.Commands.BookingRates.Command;
-using HuntleyWeb.Application.Commands.BookingRates.Query;
+﻿using HuntleyWeb.Application.Commands.BookingRates.Query;
 using HuntleyWeb.Application.Commands.Bookings.Command;
+using HuntleyWeb.Application.Commands.Bookings.Query;
+using HuntleyWeb.Application.Commands.Email;
 using HuntleyWeb.Application.Commands.enums;
 using HuntleyWeb.Application.Data.Models.Bookings;
 using HuntleyWeb.Application.Data.Models.Requests;
+using HuntleyWeb.Application.Models;
+using HuntleyWeb.Application.Services.Bookings;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
-using HuntleyWeb.Application.Services.Bookings;
-using HuntleyWeb.Application.Commands.Bookings.Query;
 
 namespace HuntleyServicesAPI.Controllers
 {
@@ -75,6 +76,25 @@ namespace HuntleyServicesAPI.Controllers
             };
 
             var result = await _mediator.Send(command);
+
+            if (result.Success) {
+
+                // Send Emails
+                var notificationCommand = new MailMessageCommand
+                {
+                    MessageRequest = new MailMessageRequest
+                    {
+                        FromAddress = "HuntleyWeb@hotmail.com",
+                        TargetAddress = _configuration.GetValue<string>("Bookings:TargetEmail"),
+                        Subject = "Booking Request",
+                        MessageBody = BookingsHelper.GetNotificationContent(booking),
+                        NotificationList = "",
+                        BodyIsHtml = true
+                    }
+                };
+
+                var notificationResult = await _mediator.Send(notificationCommand);
+            }
 
             var response = new OkObjectResult(result)
             {

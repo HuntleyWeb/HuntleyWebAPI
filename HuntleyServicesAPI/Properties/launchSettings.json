@@ -18,7 +18,8 @@
         "Data:Bookings:Connection": "AccountEndpoint=https://cosmosdb-hweb.documents.azure.com:443/;AccountKey=Jqa4dhuw3flc5nXbf7hQJPHLUfn8S2XOt5A1ScaSp4wIxEiwsdesiOJyBXod0lxlAnUMburp2ZpWACDb079fcw==;",
         "Data:Bookings:ContainerBookingRates": "BookingRates",
         "Data:Bookings:ContainerBookings": "Bookings",
-        "Data:Bookings:Ttl": "157680000"
+        "Data:Bookings:Ttl": "157680000",
+        "Bookings:TargetEmail": "HuntleyHomes@hotmail.com"        
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7125;http://localhost:5125"
