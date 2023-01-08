@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 using HuntleyWeb.Application.Services.Bookings;
+using HuntleyWeb.Application.Commands.Bookings.Query;
 
 namespace HuntleyServicesAPI.Controllers
 {
@@ -103,21 +104,24 @@ namespace HuntleyServicesAPI.Controllers
             if (bookingMonth < 1 || bookingMonth > 12)
                 return BadRequest("WeekNumber must be bewteen 1 and 12");
 
-            var response = new string[]
+            var startDate = new DateTime(bookingYear, bookingMonth, 1);
+            var endDate = startDate.AddMonths(13);
+
+            var query = new BookingQuery
             {
-                new DateTime(bookingYear, bookingMonth, 9).ToString(DateFormat),
-                new DateTime(bookingYear, bookingMonth, 10).ToString(DateFormat),
-                new DateTime(bookingYear, bookingMonth, 11).ToString(DateFormat),
-                new DateTime(bookingYear, bookingMonth, 12).ToString(DateFormat),
-                new DateTime(bookingYear, bookingMonth, 13).ToString(DateFormat),
-                new DateTime(bookingYear, bookingMonth + 1, 6).ToString(DateFormat),
-                new DateTime(bookingYear, bookingMonth + 1, 7).ToString(DateFormat),
-                new DateTime(bookingYear, bookingMonth + 1, 8).ToString(DateFormat),
-                new DateTime(bookingYear, bookingMonth + 1, 9).ToString(DateFormat),
-                new DateTime(bookingYear, bookingMonth + 1, 10).ToString(DateFormat),
+                StartDate = startDate,
+                EndDate = endDate,
             };
 
-            return Ok(response);           
+            var result = await _mediator.Send(query);
+
+            var bookedDays = new string[] { };
+            if (result.Bookings.Any())
+            {
+                bookedDays = BookingsHelper.GetBookedDays(result.Bookings);
+            }           
+
+            return Ok(bookedDays);           
         }
     }
 }

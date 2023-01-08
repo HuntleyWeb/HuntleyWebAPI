@@ -1,5 +1,7 @@
 ﻿using HuntleyWeb.Application.Commands.enums;
+using HuntleyWeb.Application.Data.Models.Bookings;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace HuntleyWeb.Application.Services.Bookings
@@ -71,6 +73,28 @@ namespace HuntleyWeb.Application.Services.Bookings
             var diffDays = (endDate - startDate).TotalDays;
 
             return (int)diffDays;
+        }
+
+        public static string[] GetBookedDays(List<Booking> bookings)
+        {
+            var BookedDayFormat = "dd/MM/yyyy";
+
+            var days = new List<string>();
+
+            foreach(Booking booking in bookings)
+            {
+                var startDate = booking.StartDate;
+                var endDate = booking.EndDate;
+
+                for (int i = 0; i <= booking.Days; i++)
+                {
+                    var bookedDate = startDate.AddDays(i);
+
+                    days.Add(bookedDate.ToString(BookedDayFormat));
+                }
+            }
+
+            return days.ToArray();
         }
     }
 }

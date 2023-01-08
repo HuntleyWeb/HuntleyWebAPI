@@ -4,6 +4,7 @@ using HuntleyWeb.Application.Data.Repos.Cosmos;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HuntleyWeb.Application.Data.Repos
@@ -48,6 +49,17 @@ namespace HuntleyWeb.Application.Data.Repos
             var query = $"Select * FROM c WHERE c.StartDate >= '{startDate.ToString(DateFormat)}' AND c.StartDate <= '{endDate.ToString(DateFormat)}' ORDER BY c.Created DESC";
 
             var result = await base.QuerySingleAsync(query);
+
+            return result;
+        }
+
+        public async Task<List<Booking>> GetBookingsAsync(DateTime startDate, DateTime endDate)
+        {
+            // WHERE c.StartDate >= '2022-12-01' AND c.EndDate <= '2024-01-31'
+
+            var query = $"Select * FROM c WHERE c.StartDate >= '{startDate.ToString(DateFormat)}' AND c.EndDate <= '{endDate.ToString(DateFormat)}' ORDER BY c.Created DESC";
+
+            var result = await base.RunQuery(query);
 
             return result;
         }
