@@ -10,7 +10,7 @@ namespace HuntleyWeb.Application.Data.Repos
 {
     public class BookingRateRepository : CosmosRepository<BookingRate>, IBookingRateRepository
     {
-        public BookingRateRepository(CosmosClient cosmosClient, IOptions<CosmosOptions> options)
+        public BookingRateRepository(CosmosClient cosmosClient, IOptions<BookingRateOptions> options)
             : base(cosmosClient, options.Value.DatabaseName, options.Value.ContainerName)
         {
         }

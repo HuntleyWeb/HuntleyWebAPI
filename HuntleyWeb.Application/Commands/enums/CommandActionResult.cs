@@ -1,4 +1,4 @@
-﻿namespace HuntleyWeb.Application.Commands.BookingRates.Command.enums
+﻿namespace HuntleyWeb.Application.Commands.enums
 {
     public enum CommandActionResult
     {

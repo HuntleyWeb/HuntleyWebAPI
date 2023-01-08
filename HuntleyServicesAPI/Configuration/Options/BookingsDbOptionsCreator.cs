@@ -4,7 +4,7 @@ namespace HuntleyServicesAPI.Configuration.Options
 {
     public class BookingsDbOptionsCreator
     {
-        public static CosmosOptions Create(IApplicationConfiguration applicationConfiguration) => new()
+        public static BookingOptions Create(IApplicationConfiguration applicationConfiguration) => new()
         {
             ConnectionString = applicationConfiguration.BookingsDbConnection,
             ContainerName = applicationConfiguration.BookingsContainer,

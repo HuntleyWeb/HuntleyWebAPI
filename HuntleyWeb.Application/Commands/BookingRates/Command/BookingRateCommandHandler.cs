@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using HuntleyWeb.Application.Commands.enums;
 using HuntleyWeb.Application.Data.Models.Bookings;
 using HuntleyWeb.Application.Data.Repos;
 using MediatR;
@@ -29,9 +30,9 @@ namespace HuntleyWeb.Application.Commands.BookingRates.Command
         {            
             var response  = request.RequestedAction switch
             {
-                enums.CommandAction.Insert => await ProcessRateInsert(request),
-                enums.CommandAction.Update => await ProcessRateUpdate(request),
-                enums.CommandAction.Delete => await ProcessRateDelete(request),
+                CommandAction.Insert => await ProcessRateInsert(request),
+                CommandAction.Update => await ProcessRateUpdate(request),
+                CommandAction.Delete => await ProcessRateDelete(request),
                 _ => throw new Exception("No Command Action Set in Request")
             };
             
@@ -49,7 +50,7 @@ namespace HuntleyWeb.Application.Commands.BookingRates.Command
                 {
                     Success = false,
                     RecordsAffected = 0,
-                    CommandResult = enums.CommandActionResult.Conflict,
+                    CommandResult = CommandActionResult.Conflict,
                     RecordId = existingRate.Id,
                     Information = $"Booking Rate already exists for Year:{request.Rate.Year} and Week Number:{request.Rate.WeekNumber}"
                 };
@@ -69,7 +70,7 @@ namespace HuntleyWeb.Application.Commands.BookingRates.Command
                 {
                     Success = true,
                     RecordsAffected = 1,
-                    CommandResult = enums.CommandActionResult.Created,
+                    CommandResult = CommandActionResult.Created,
                     RecordId = bookingRateId
                 };
             }
@@ -79,7 +80,7 @@ namespace HuntleyWeb.Application.Commands.BookingRates.Command
                 Success = false,
                 RecordId = bookingRateId,
                 RecordsAffected = 0,
-                CommandResult = enums.CommandActionResult.Failure
+                CommandResult = CommandActionResult.Failure
             };
         }
 
@@ -93,7 +94,7 @@ namespace HuntleyWeb.Application.Commands.BookingRates.Command
                 {
                     Success = false,
                     RecordsAffected = 0,
-                    CommandResult = enums.CommandActionResult.NotFound,
+                    CommandResult = CommandActionResult.NotFound,
                     RecordId = request.Rate.Id
                 };
             }
@@ -113,7 +114,7 @@ namespace HuntleyWeb.Application.Commands.BookingRates.Command
                 {
                     Success = true,
                     RecordsAffected = 1,
-                    CommandResult = enums.CommandActionResult.Updated,
+                    CommandResult = CommandActionResult.Updated,
                     RecordId = bookingRateId
                 };
             }
@@ -123,7 +124,7 @@ namespace HuntleyWeb.Application.Commands.BookingRates.Command
                 Success = false,
                 RecordId = bookingRateId,
                 RecordsAffected = 0,
-                CommandResult = enums.CommandActionResult.Failure
+                CommandResult = CommandActionResult.Failure
             };
         }
 
@@ -137,7 +138,7 @@ namespace HuntleyWeb.Application.Commands.BookingRates.Command
                 {
                     Success = false,
                     RecordsAffected = 0,
-                    CommandResult = enums.CommandActionResult.NotFound,
+                    CommandResult = CommandActionResult.NotFound,
                     RecordId = request.Rate.Id
                 };
             }           
@@ -150,7 +151,7 @@ namespace HuntleyWeb.Application.Commands.BookingRates.Command
                 {
                     Success = true,
                     RecordsAffected = 1,
-                    CommandResult = enums.CommandActionResult.Deleted,
+                    CommandResult = CommandActionResult.Deleted,
                     RecordId = request.Rate.Id
                 };
             }
@@ -160,7 +161,7 @@ namespace HuntleyWeb.Application.Commands.BookingRates.Command
                 Success = false,
                 RecordId = request.Rate.Id,
                 RecordsAffected = 0,
-                CommandResult = enums.CommandActionResult.Failure
+                CommandResult = CommandActionResult.Failure
             };
         }
 

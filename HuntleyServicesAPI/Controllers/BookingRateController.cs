@@ -1,7 +1,7 @@
 ﻿using HuntleyServicesAPI.Models;
 using HuntleyWeb.Application.Commands.BookingRates.Command;
-using HuntleyWeb.Application.Commands.BookingRates.Command.enums;
 using HuntleyWeb.Application.Commands.BookingRates.Query;
+using HuntleyWeb.Application.Commands.enums;
 using HuntleyWeb.Application.Data.Models.Bookings;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

@@ -30,10 +30,10 @@ namespace HuntleyWeb.Application.Configuration
             return services;
         }
 
-        public static IServiceCollection AddBookingRateRepository(this IServiceCollection services, CosmosOptions configuration)
+        public static IServiceCollection AddBookingRateRepository(this IServiceCollection services, BookingRateOptions configuration)
         {
             services
-                .AddOptions<CosmosOptions>()
+                .AddOptions<BookingRateOptions>()
                 .Configure(options =>
                 {
                     options.ConnectionString = configuration.ConnectionString;
@@ -48,6 +48,28 @@ namespace HuntleyWeb.Application.Configuration
             });
 
             services.AddScoped<IBookingRateRepository, BookingRateRepository>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddBookingsRepository(this IServiceCollection services, BookingOptions configuration)
+        {
+            services
+                .AddOptions<BookingOptions>()
+                .Configure(options =>
+                {
+                    options.ConnectionString = configuration.ConnectionString;
+                    options.DatabaseName = configuration.DatabaseName;
+                    options.ContainerName = configuration.ContainerName;
+                    options.TtlSecs = configuration.TtlSecs;
+                });
+
+            services.AddScoped<CosmosClient>(c =>
+            {
+                return new CosmosClient(configuration.ConnectionString);
+            });
+
+            services.AddScoped<IBookingsRepository, BookingsRepository>();
 
             return services;
         }

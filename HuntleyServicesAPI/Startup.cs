@@ -1,14 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
-using System.Xml.Linq;
-using System;
-using HuntleyWeb.Application.Commands.Email;
+﻿using HuntleyWeb.Application.Services;
 using HuntleyWeb.Application.Services.Email;
-using HuntleyWeb.Application.Services;
-using Microsoft.OpenApi.Models;
-using System.Net.Mail;
 using System.Net;
+using System.Net.Mail;
 
 namespace HuntleyServicesAPI
 {

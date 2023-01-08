@@ -29,6 +29,7 @@ var bookingsDbOptions = BookingsDbOptionsCreator.Create(applicationConfiguration
 
 builder.Services.AddApplication(mailOptions);
 builder.Services.AddBookingRateRepository(bookingRatesDbOptions);
+builder.Services.AddBookingsRepository(bookingsDbOptions);
 builder.Services.AddFunctionServices();
 
 var app = builder.Build();

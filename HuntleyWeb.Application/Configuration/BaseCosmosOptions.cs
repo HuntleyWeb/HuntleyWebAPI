@@ -1,6 +1,6 @@
 ﻿namespace HuntleyWeb.Application.Configuration
 {
-    public class CosmosOptions
+    public abstract class BaseCosmosOptions
     {
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
