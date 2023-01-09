@@ -36,7 +36,7 @@ namespace HuntleyWeb.Application.Services.Bookings
 
             var diffDays = (endDate - startDate).TotalDays;
 
-            if (diffDays <= 3)
+            if (diffDays < 3)
                 return ("Booking Period is too short, it cannot be less than 3 days!", false);
 
             return ("All Good!", true);
@@ -67,6 +67,27 @@ namespace HuntleyWeb.Application.Services.Bookings
             }
 
             return (duration, BreakType.Undefined);
+        }
+
+        public static BreakType GetBookingType(DateTime startDate, int duration)
+        {
+            
+            if (startDate.DayOfWeek == DayOfWeek.Saturday && duration == SevenDayBreakDuration)
+            {
+                return BreakType.SevenDay;
+            }
+
+            if (startDate.DayOfWeek == DayOfWeek.Friday && duration == WeekEndBreakDuration)
+            {
+                return BreakType.Weekend;
+            }
+
+            if (startDate.DayOfWeek == DayOfWeek.Monday && duration == MidWeekBreakDuration)
+            {
+                return BreakType.MidWeek;
+            }
+
+            return BreakType.Undefined;
         }
 
         public static int GetDurationInDays(DateTime startDate, DateTime endDate)

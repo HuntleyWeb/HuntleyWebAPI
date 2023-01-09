@@ -1,8 +1,11 @@
-﻿using HuntleyServicesAPI.Models;
+﻿using Azure.Core;
+using HuntleyServicesAPI.Models;
 using HuntleyWeb.Application.Commands.BookingRates.Command;
 using HuntleyWeb.Application.Commands.BookingRates.Query;
 using HuntleyWeb.Application.Commands.enums;
 using HuntleyWeb.Application.Data.Models.Bookings;
+using HuntleyWeb.Application.Data.Models.Requests;
+using HuntleyWeb.Application.Services.Bookings;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -173,6 +176,45 @@ namespace HuntleyServicesAPI.Controllers
             if (result.RecordFound)
             {
                 return Ok(result.Rate);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet]
+        [Route("getBookingRateByStartDate")]        
+        [SwaggerResponse((int)HttpStatusCode.BadRequest)]
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> GetBookingRateByStartDate(string date, int duration)
+        {
+            if (!DateTime.TryParse(date, out var startDate))
+                return BadRequest("Invalid Date");
+
+            var weekNumber = BookingsHelper.GetBookingWeekNumber(startDate);
+            var breakType = BookingsHelper.GetBookingType(startDate, duration);
+
+            var query = new BookingRateQuery
+            {
+                RequestedYear = startDate.Year,
+                RequestedWeekNumber = weekNumber
+            };
+
+            var result = await _mediator.Send(query);
+
+            if (result.RecordFound)
+            {
+                var rateAmount = breakType switch
+                {
+                    BreakType.SevenDay => result.Rate.SevenDayRate,
+                    BreakType.Weekend => result.Rate.WeekendRate,
+                    BreakType.MidWeek => result.Rate.MidWeekRate,
+                    _ => throw new Exception("No matching Booking Rate Set!")
+                };
+
+                return Ok(rateAmount);
             }
             else
             {

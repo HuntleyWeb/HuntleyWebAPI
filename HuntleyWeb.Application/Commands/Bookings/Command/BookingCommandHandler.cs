@@ -78,6 +78,10 @@ namespace HuntleyWeb.Application.Commands.Bookings.Command
                     _ => throw new Exception("No matching Booking Rate Set!")
                 };
             }
+            else
+            {
+                throw new Exception("No Booking Rate configured for this period!");
+            }
 
             request.Booking.LastModified = null;
 
